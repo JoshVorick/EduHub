@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row-fluid">
+    <div class="col-md-4" id="treeholder">
+        <h4>Topics</h4>
+        <div id="topictree" data-url="{% url 'topic_list_jstree' %}"></div>
+    </div>
+    <div class="col-md-8" id="topicinfo">
+        <h3 id="topic-name" style="color:grey;">(please select a topic)</h3>
+        <div id="topic-description"></div>
+        <p></p>
+        <div id="edusources">No learning materials for this topic yet</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block pagescripts %}
+<script type="text/javascript">
+    $(function() {
+        var $topicTree = $("#topictree");
+        $topicTree.tree({saveState: 'topictree'});
+        var last_load = $.cookie("topictree-pk");
+
+
+        var load_topic = function(pk) {
+            $.getJSON(Urls.topic_detail_json(pk), function(response) {
+                $("#topic-name").css('color', 'black').text(response.name);
+                $("#topic-description").text(response.description);
+            });
+            $.getJSON(Urls.topic_edusource_json(pk), function(response) {
+                var html = '<table id="edusources_table">';
+                html += '<thead> <tr>';
+                html += '<th>Type</th>';
+                html += '<th>Time</th>';
+                html += '<th>Name</th>';
+                html += '<th>Provider</th>';
+                html += '</tr> </thead> <tbody>';
+                $.each(response, function(_, s) {
+                    t = "<5 min";
+                    if (s.type != "Video") {
+                        if (Math.random() < 0.5) {
+                            t = "15 min";
+                        } else {
+                           t = "10 min";
+                        }
+                    } else {
+                        if (Math.random() < 0.33) {
+                            t = "10 min";
+                        }
+                    }
+                    html += '<tr>';
+                    html += '<td>' + s.type + '</td>';
+                    html += '<td>' + t + '</td>';
+                    html += '<td><a href="' + Urls.edusource_view(s.id) + '">' + s.name + '</a></td>';
+                    html += '<td><a target="_blank" href="' + s.url + '">' + s.provider + '</a></td>';
+                    html += '</tr>';
+                });
+                html += '<tbody> </table>';
+
+                $("#edusources").html(html);
+                $(document).ready(function() {
+                    $("#edusources_table").DataTable();
+                });
+            });
+        };
+
+        if($.isNumeric(last_load)) {
+            load_topic(last_load);
+        }
+
+        $topicTree.bind('tree.click', function(e) {
+            $.cookie("topictree-pk", e.node.pk);
+            load_topic(e.node.pk);
+        });
+    })
+</script>
+{% endblock %}

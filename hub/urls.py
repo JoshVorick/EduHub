@@ -1,0 +1,18 @@
+from django.conf.urls import url
+from . import views
+
+urlpatterns = [
+    # Base pages
+    url(r'^$', views.index, name='index'),
+    url(r'^logout', views.do_logout, name='logout'),
+    url(r'^login_check$', views.login_check, name='login_check'),
+    # Topic-related
+    url(r'^topics$', views.topic_list, name='topic_list'),
+    url(r'^topic-nodes$', views.topic_list_jstree, name='topic_list_jstree'),
+    url(r'^topic/(?P<pk>\d+)/details.json', views.topic_detail_json, name='topic_detail_json'),
+    url(r'^topic/(?P<pk>\d+)/edusources.json', views.topic_edusource_json, name='topic_edusource_json'),
+    # Source
+    url(r'^source/(?P<pk>\d+)/view', views.edusource_view, name='edusource_view'),
+    url(r'^forum/(?P<pk>\d+)/threads.json', views.load_forum_posts, name='load_forum_posts'),
+    url(r'^random-source', views.randomsource_view, name='randomsource')
+]
