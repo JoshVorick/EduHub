@@ -1,4 +1,8 @@
 .idea
+.plan
+
+# My virtual env folder
+dj_env/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
