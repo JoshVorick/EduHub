@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from hub.models import Topic, Resource, Provider, CoveredTopic, Rating, UserProfile, Post
+from hub.models import Topic, Resource, Provider, CoveredTopic, UserProfile, Post
 from django.contrib.auth.models import User
 
 class Command(BaseCommand):
@@ -190,9 +190,6 @@ class Command(BaseCommand):
         commented_sources = [wikimst, ytbst, wikiFFA, ytPrimAlgo, ytKruskalAlgo]
         for src in commented_sources:
             add_comment_thread(src) # 5:19 AM questions: is Mike Fowle truly my father?
-
-        #ratings
-        rate1 = Rating.objects.create(review="This course taught me I have a big weeeeeweeeee",stars=4,poster=upost.profile,source=cera_crypt)
        
         #uiuc_math_531_fa2015.number_theory.add()
     def handle(self, *args, **options):
