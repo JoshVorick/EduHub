@@ -10,9 +10,9 @@ urlpatterns = [
     url(r'^topics$', views.topic_list, name='topic_list'),
     url(r'^topic-nodes$', views.topic_list_jstree, name='topic_list_jstree'),
     url(r'^topic/(?P<pk>\d+)/details.json', views.topic_detail_json, name='topic_detail_json'),
-    url(r'^topic/(?P<pk>\d+)/edusources.json', views.topic_edusource_json, name='topic_edusource_json'),
-    # Source
-    url(r'^source/(?P<pk>\d+)/view', views.edusource_view, name='edusource_view'),
+    url(r'^topic/(?P<pk>\d+)/resources.json', views.topic_resource_json, name='topic_resource_json'),
+    # Resource
+    url(r'^resource/(?P<pk>\d+)/view', views.resource_view, name='resource_view'),
     url(r'^forum/(?P<pk>\d+)/threads.json', views.load_forum_posts, name='load_forum_posts'),
-    url(r'^random-source', views.randomsource_view, name='randomsource')
+    url(r'^random-resource', views.randomresource_view, name='randomresource')
 ]

@@ -10,7 +10,7 @@
         <h3 id="topic-name" style="color:grey;">(please select a topic)</h3>
         <div id="topic-description"></div>
         <p></p>
-        <div id="edusources">No learning materials for this topic yet</div>
+        <div id="resources">No learning materials for this topic yet</div>
     </div>
 </div>
 {% endblock %}
@@ -28,8 +28,8 @@
                 $("#topic-name").css('color', 'black').text(response.name);
                 $("#topic-description").text(response.description);
             });
-            $.getJSON(Urls.topic_edusource_json(pk), function(response) {
-                var html = '<table id="edusources_table">';
+            $.getJSON(Urls.topic_resource_json(pk), function(response) {
+                var html = '<table id="resources_table">';
                 html += '<thead> <tr>';
                 html += '<th>Type</th>';
                 html += '<th>Time</th>';
@@ -52,15 +52,15 @@
                     html += '<tr>';
                     html += '<td>' + s.type + '</td>';
                     html += '<td>' + t + '</td>';
-                    html += '<td><a href="' + Urls.edusource_view(s.id) + '">' + s.name + '</a></td>';
+                    html += '<td><a href="' + Urls.resource_view(s.id) + '">' + s.name + '</a></td>';
                     html += '<td><a target="_blank" href="' + s.url + '">' + s.provider + '</a></td>';
                     html += '</tr>';
                 });
                 html += '<tbody> </table>';
 
-                $("#edusources").html(html);
+                $("#resources").html(html);
                 $(document).ready(function() {
-                    $("#edusources_table").DataTable();
+                    $("#resources_table").DataTable();
                 });
             });
         };

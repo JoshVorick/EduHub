@@ -37,14 +37,14 @@ class Topic(MPTTModel, TimestampedModel):
         return self.name
 
 
-class EduSource(TimestampedModel):
+class Resource(TimestampedModel):
     name = models.CharField(max_length=500)
     type = models.CharField(max_length=500)
     covered_topics = models.ManyToManyField(Topic, through='CoveredTopic', related_name='covered_by')
     required_topics = models.ManyToManyField(Topic, through='RequiredTopic', related_name='required_by')
     url = models.CharField(max_length=250, null=True) # these should be validated
     # user = models.ForeignKey('UserProfile', on_delete=models.CASCADE, related_name='creator')
-    provider = models.ForeignKey('EduProvider', on_delete=models.CASCADE, related_name='sources', null=True)
+    provider = models.ForeignKey('Provider', on_delete=models.CASCADE, related_name='sources', null=True)
 
     def get_embed_type_and_html(self):
         parsed = urlparse(self.url)
@@ -72,7 +72,7 @@ class EduSource(TimestampedModel):
         return self.name
 
 
-class EduProvider(TimestampedModel):
+class Provider(TimestampedModel):
     name = models.CharField(max_length=500)
     url = models.CharField(max_length=250, null=True)
     description = models.TextField(max_length=1000)
@@ -85,21 +85,21 @@ class ProviderRating(TimestampedModel):
     review = models.TextField(blank=True)
     stars = models.PositiveSmallIntegerField()
     poster = models.ForeignKey('UserProfile', on_delete=models.CASCADE, related_name='provider_ratings')
-    source = models.ForeignKey('EduProvider', on_delete=models.CASCADE, related_name='provider_ratings')
+    source = models.ForeignKey('Provider', on_delete=models.CASCADE, related_name='provider_ratings')
 
 
 class Rating(TimestampedModel):
     review = models.TextField(blank=True)
     stars = models.PositiveSmallIntegerField()
     poster = models.ForeignKey('UserProfile', on_delete=models.CASCADE, related_name='ratings')
-    source = models.ForeignKey('EduSource', on_delete=models.CASCADE, related_name='ratings')
+    source = models.ForeignKey('Resource', on_delete=models.CASCADE, related_name='ratings')
 
 
 class Problem(TimestampedModel):
     problems = models.TextField(max_length=1000)
     stars = models.PositiveSmallIntegerField()
     poster = models.ForeignKey('UserProfile', on_delete=models.CASCADE, related_name='submitted_problems')
-    source = models.ForeignKey('EduSource', on_delete=models.CASCADE, related_name='submitted_problems')
+    source = models.ForeignKey('Resource', on_delete=models.CASCADE, related_name='submitted_problems')
 
 
 class Solution(TimestampedModel):
@@ -118,7 +118,7 @@ class Grading(TimestampedModel):
     
 
 class Post(MPTTModel):
-    forum = models.ForeignKey('EduSource', on_delete=models.CASCADE, related_name='source_fourm', null=True)
+    forum = models.ForeignKey('Resource', on_delete=models.CASCADE, related_name='source_fourm', null=True)
     text = models.TextField(max_length= 2000)
     #reply = models.ForeignKey('Post', on_delete=models.SET_NULL, null=True, related_name="replies")
     user = models.ForeignKey('UserProfile', on_delete=models.CASCADE, related_name="posts")
@@ -138,7 +138,7 @@ class Post(MPTTModel):
 # "through" models
 class CoveredTopic(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
-    edusource = models.ForeignKey(EduSource, on_delete=models.CASCADE)
+    resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
 
 
 class RequirementType(enum.Enum):
@@ -149,5 +149,5 @@ class RequirementType(enum.Enum):
 
 class RequiredTopic(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
-    edusource = models.ForeignKey(EduSource, on_delete=models.CASCADE)
+    resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
     level = enum.EnumField(RequirementType)
