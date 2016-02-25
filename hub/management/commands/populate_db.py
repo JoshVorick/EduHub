@@ -141,20 +141,30 @@ class Command(BaseCommand):
 
 
         #resources
-        uiuc_math_531_fa2015 = Resource.objects.create(name = "Analytical Number Theory Math 531 UIUC", type = Resource.PROBLEM_SET, url = "http://www.math.illinois.edu/~berndt/math531.html",provider=uiuc)
-        cera_crypt = Resource.objects.create(name = "Cryptography I: Stanford University", type = Resource.COURSE, url = "https://www.coursera.org/learn/crypto",provider=coursera)
-        ytbst = Resource.objects.create(name = "Data Structures: Binary Search Trees", type = Resource.VIDEO, url = "https://www.youtube.com/watch?v=pYT9F8_LFTM",provider=mycodeschool)
-        ytrieman = Resource.objects.create(name = "The Riemann Hypothesis", type = Resource.VIDEO, url = "https://www.youtube.com/watch?v=yhtcJPI6AtY",provider=yale)
-        wikimst = Resource.objects.create(name="Minimum Spanning Trees", type=Resource.WIKI, url="https://en.wikipedia.org/wiki/Minimum_spanning_tree", provider=wikipedia)
-        ytPrimAlgo = Resource.objects.create(name="Prim's Algorithm", type=Resource.VIDEO, url="https://www.youtube.com/watch?v=BtGuZ-rrUeY", provider=andrewhickson)
-        wikiPrimAlgo = Resource.objects.create(name="Prim's algorithm", type=Resource.WIKI, url="https://en.wikipedia.org/wiki/Prim%27s_algorithm", provider=wikipedia)
-        ytKruskalAlgo = Resource.objects.create(name="Kruskal's algorithm in 2 minutes", type=Resource.VIDEO, url="https://www.youtube.com/watch?v=71UQH7Pr9kU", provider=mike)
-        wikiFFA = Resource.objects.create(name="Ford-Fulkerson algorithm", type=Resource.WIKI, url="https://en.wikipedia.org/wiki/Ford%E2%80%93Fulkerson_algorithm", provider=wikipedia)
-        stanGraph = Resource.objects.create(name="Basic Graph Algorithms", type=Resource.SLIDES, url="https://web.stanford.edu/class/cs97si/06-basic-graph-algorithms.pdf", provider=stanford)
-        ytmerkle = Resource.objects.create(name="Blockchain Basics Explained - Hashes with Mining and Merkle trees", type=Resource.VIDEO, url="https://www.youtube.com/watch?v=lik9aaFIsl4", provider=chainthat)
-        ytmotivation = Resource.objects.create(name="The Science of Motivation", type=Resource.VIDEO, url="https://www.youtube.com/watch?v=pZT-FZqfxZA", provider=asapscience)
-        ytcolor = Resource.objects.create(name="Computer Color is Broken", type=Resource.VIDEO, url="https://www.youtube.com/watch?v=LKnqECcg6Gw", provider=minphys)
-        wikigravwaves = Resource.objects.create(name="Gravitational Waves", type=Resource.WIKI, url="https://en.wikipedia.org/wiki/Gravitational_wave", provider=wikipedia)
+        # for now hard code mapping from int to learning style. Later when resources are only added online, django_forms will handle this automatically
+        VIDEO = 1
+        WIKI = 2
+        SLIDES = 3
+        LECTURE = 4
+        COURSE = 5
+        PAPER = 6
+        PDF = 7
+        PROBLEM_SET = 8
+
+        uiuc_math_531_fa2015 = Resource.objects.create(name = "Analytical Number Theory Math 531 UIUC", type = PROBLEM_SET, url = "http://www.math.illinois.edu/~berndt/math531.html",provider=uiuc)
+        cera_crypt = Resource.objects.create(name = "Cryptography I: Stanford University", type = COURSE, url = "https://www.coursera.org/learn/crypto",provider=coursera)
+        ytbst = Resource.objects.create(name = "Data Structures: Binary Search Trees", type = VIDEO, url = "https://www.youtube.com/watch?v=pYT9F8_LFTM",provider=mycodeschool)
+        ytrieman = Resource.objects.create(name = "The Riemann Hypothesis", type = VIDEO, url = "https://www.youtube.com/watch?v=yhtcJPI6AtY",provider=yale)
+        wikimst = Resource.objects.create(name="Minimum Spanning Trees", type=WIKI, url="https://en.wikipedia.org/wiki/Minimum_spanning_tree", provider=wikipedia)
+        ytPrimAlgo = Resource.objects.create(name="Prim's Algorithm", type=VIDEO, url="https://www.youtube.com/watch?v=BtGuZ-rrUeY", provider=andrewhickson)
+        wikiPrimAlgo = Resource.objects.create(name="Prim's algorithm", type=WIKI, url="https://en.wikipedia.org/wiki/Prim%27s_algorithm", provider=wikipedia)
+        ytKruskalAlgo = Resource.objects.create(name="Kruskal's algorithm in 2 minutes", type=VIDEO, url="https://www.youtube.com/watch?v=71UQH7Pr9kU", provider=mike)
+        wikiFFA = Resource.objects.create(name="Ford-Fulkerson algorithm", type=WIKI, url="https://en.wikipedia.org/wiki/Ford%E2%80%93Fulkerson_algorithm", provider=wikipedia)
+        stanGraph = Resource.objects.create(name="Basic Graph Algorithms", type=SLIDES, url="https://web.stanford.edu/class/cs97si/06-basic-graph-algorithms.pdf", provider=stanford)
+        ytmerkle = Resource.objects.create(name="Blockchain Basics Explained - Hashes with Mining and Merkle trees", type=VIDEO, url="https://www.youtube.com/watch?v=lik9aaFIsl4", provider=chainthat)
+        ytmotivation = Resource.objects.create(name="The Science of Motivation", type=VIDEO, url="https://www.youtube.com/watch?v=pZT-FZqfxZA", provider=asapscience)
+        ytcolor = Resource.objects.create(name="Computer Color is Broken", type=VIDEO, url="https://www.youtube.com/watch?v=LKnqECcg6Gw", provider=minphys)
+        wikigravwaves = Resource.objects.create(name="Gravitational Waves", type=WIKI, url="https://en.wikipedia.org/wiki/Gravitational_wave", provider=wikipedia)
         
         #covertopics
         CoveredTopic.objects.create(topic=crypt,resource=cera_crypt)

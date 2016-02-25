@@ -1,3 +1,4 @@
+from hub.choices import *
 from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
 from django_enumfield import enum
@@ -9,28 +10,8 @@ from django.utils import timezone
 
 # Tie users to things through this - one will be created for each user.
 class UserProfile(TimestampedModel):
-    VIDEO = 0
-    WIKI = 1
-    SLIDES = 2
-    LECTURE = 3 # Video leture
-    COURSE = 4
-    RESEARCH_PAPER = 5
-    PDF = 6
-    PROBLEM_SET = 7
-
-    TYPE_CHOICES = (
-        (VIDEO, "Video"),
-        (WIKI, "Wiki"),
-        (SLIDES, "Slides"),
-        (LECTURE, "Lecture"),
-        (COURSE, "Course"),
-        (RESEARCH_PAPER, "Research Paper"),
-        (PDF, "PDF"),
-        (PROBLEM_SET, "Problem Set"),
-    )
-
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
-    learning_style = models.CharField(max_length=30, choices=TYPE_CHOICES, default=VIDEO)
+    learning_style = models.CharField(max_length=30, choices=LEARNING_STYLES, default=1)
 
     def __str__(self):
         return str(self.user)
@@ -63,28 +44,8 @@ class Topic(MPTTModel, TimestampedModel):
 # Resources have prereqs (RequiredTopics) and CoveredTopics
 # Users can rate Resources based on how good they are and how technical they are
 class Resource(TimestampedModel):
-    VIDEO = 0
-    WIKI = 1
-    SLIDES = 2
-    LECTURE = 3 # Video leture
-    COURSE = 4
-    RESEARCH_PAPER = 5
-    PDF = 6
-    PROBLEM_SET = 7
-
-    TYPE_CHOICES = (
-        (VIDEO, "Video"),
-        (WIKI, "Wiki"),
-        (SLIDES, "Slides"),
-        (LECTURE, "Lecture"),
-        (COURSE, "Course"),
-        (RESEARCH_PAPER, "Research Paper"),
-        (PDF, "PDF"),
-        (PROBLEM_SET, "Problem Set"),
-    )
-
     name = models.CharField(max_length=500)
-    type = models.CharField(max_length=30, choices=TYPE_CHOICES, default=VIDEO)
+    type = models.IntegerField('Type', default=1, choices=RESOURCE_TYPES)
     covered_topics = models.ManyToManyField(Topic, through='CoveredTopic', related_name='covered_by')
     required_topics = models.ManyToManyField(Topic, through='RequiredTopic', related_name='required_by')
     url = models.CharField(max_length=250, null=True) # these should be validated
