@@ -11,7 +11,7 @@ from django.utils import timezone
 # Tie users to things through this - one will be created for each user.
 class UserProfile(TimestampedModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
-    learning_style = models.CharField(max_length=30, choices=LEARNING_STYLES, default=1)
+    learning_style = models.CharField('Learning Style', max_length=30, choices=LEARNING_STYLES, default=1)
 
     def __str__(self):
         return str(self.user)
@@ -19,8 +19,8 @@ class UserProfile(TimestampedModel):
 
 # Arbitrary grouping of topics - used to group prereqs or curricula
 class TopicSet(TimestampedModel):
-    name = models.CharField(max_length=500)
-    description = models.TextField(blank=True)
+    name = models.CharField('Name', max_length=500)
+    description = models.TextField('Description', blank=True)
     topics = models.ManyToManyField('Topic', related_name='member_of_sets')
 
     def __str__(self):
@@ -29,9 +29,9 @@ class TopicSet(TimestampedModel):
 
 # A specifc topic in the tree / DAG of topics. It has zero or more 'parent' topics and 0 or more subtopics
 class Topic(MPTTModel, TimestampedModel):
-    name = models.CharField(max_length=500)
+    name = models.CharField('Name', max_length=500)
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True)
-    description = models.TextField(blank=True)
+    description = models.TextField('Description', blank=True)
 
     class MPTTMeta:
         order_insertion_by = ['name']
@@ -44,14 +44,15 @@ class Topic(MPTTModel, TimestampedModel):
 # Resources have prereqs (RequiredTopics) and CoveredTopics
 # Users can rate Resources based on how good they are and how technical they are
 class Resource(TimestampedModel):
-    name = models.CharField(max_length=500)
+    name = models.CharField('Name', max_length=500)
     type = models.IntegerField('Type', default=1, choices=RESOURCE_TYPES)
+    length = models.IntegerField('Length (min)', null=True, blank=True)
     covered_topics = models.ManyToManyField(Topic, through='CoveredTopic', related_name='covered_by')
     required_topics = models.ManyToManyField(Topic, through='RequiredTopic', related_name='required_by')
-    url = models.CharField(max_length=250, null=True) # these should be validated
+    url = models.CharField('URL', max_length=250, null=True) # these should be validated
     # user = models.ForeignKey('UserProfile', on_delete=models.CASCADE, related_name='creator')
     provider = models.ForeignKey('Provider', on_delete=models.CASCADE, related_name='sources', null=True)
-    views = models.PositiveIntegerField(default=0)
+    views = models.PositiveIntegerField('Views', default=0)
 
     def get_embed_type_and_html(self):
         parsed = urlparse(self.url)
@@ -81,15 +82,15 @@ class Resource(TimestampedModel):
 
 # A tag for a resource. Tags are used when a resource has attributes that don't neatly fit into topics
 class Tag(TimestampedModel):
-    name = models.CharField(max_length=30)
+    name = models.CharField('Name', max_length=30)
     resources = models.ManyToManyField(Resource, related_name='tags')
 
 
 # A resource provider (e.g. Wikipedia, Khan Academy, a specific YT channel, etc)
 class Provider(TimestampedModel):
-    name = models.CharField(max_length=500)
-    url = models.CharField(max_length=250, null=True)
-    description = models.TextField(max_length=1000)
+    name = models.CharField('Name', max_length=500)
+    url = models.CharField('URL', max_length=250, null=True)
+    description = models.TextField('Description', max_length=1000)
 
     def __str__(self):
         return self.name
@@ -97,16 +98,16 @@ class Provider(TimestampedModel):
 
 # A rating saying how 'good' a resource is at teaching a given subject. Basically how effective the lesson is
 class GoodRating(TimestampedModel):
-    review = models.TextField(blank=True)
-    stars = models.PositiveSmallIntegerField()
+    review = models.TextField('Review', blank=True)
+    stars = models.PositiveSmallIntegerField('Stars')
     poster = models.ForeignKey('UserProfile', on_delete=models.CASCADE, related_name='good_ratings')
     resource = models.ForeignKey('Resource', on_delete=models.CASCADE, related_name='good_ratings')
 
 
 # A rating to gauge the technicality and depth of the resource. Does it scratch the surface or get into nitty gritty details?
 class TechRating(TimestampedModel):
-    review = models.TextField(blank=True)
-    stars = models.PositiveSmallIntegerField()
+    review = models.TextField('Review', blank=True)
+    stars = models.PositiveSmallIntegerField('Stars')
     poster = models.ForeignKey('UserProfile', on_delete=models.CASCADE, related_name='tech_ratings')
     resource = models.ForeignKey('Resource', on_delete=models.CASCADE, related_name='tech_ratings')
 
@@ -114,11 +115,11 @@ class TechRating(TimestampedModel):
 # A post by a User in the comments section of a resource
 class Post(MPTTModel):
     forum = models.ForeignKey('Resource', on_delete=models.CASCADE, related_name='source_fourm', null=True)
-    text = models.TextField(max_length= 2000)
+    text = models.TextField('Text', max_length= 2000)
     #reply = models.ForeignKey('Post', on_delete=models.SET_NULL, null=True, related_name="replies")
     user = models.ForeignKey('UserProfile', on_delete=models.CASCADE, related_name="posts")
     parent = TreeForeignKey('self', null=True, blank=True, related_name='replies', db_index=True)
-    title = models.CharField(max_length=500, blank=True)
+    title = models.CharField('Title', max_length=500, blank=True)
 
     # Sorta bad practice to use these parameters but this makes things work more smoothly so honestly fuck it.
     created_at = models.DateTimeField(auto_now_add=True)

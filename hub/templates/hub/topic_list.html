@@ -32,6 +32,7 @@
                 var html = '<table id="resources_table">';
                 html += '<thead> <tr>';
                 html += '<th>Type</th>';
+                html += '<th>Views</th>';
                 html += '<th>Time</th>';
                 html += '<th>Name</th>';
                 html += '<th>Provider</th>';
@@ -51,6 +52,7 @@
                     }
                     html += '<tr>';
                     html += '<td>' + s.type + '</td>';
+                    html += '<td>' + s.views + '</td>';
                     html += '<td>' + t + '</td>';
                     html += '<td><a href="' + Urls.resource_view(s.id) + '">' + s.name + '</a></td>';
                     html += '<td><a target="_blank" href="' + s.url + '">' + s.provider + '</a></td>';

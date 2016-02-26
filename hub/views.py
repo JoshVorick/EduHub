@@ -55,6 +55,8 @@ def randomresource_view(request):
 
 def resource_view(request, pk):
     resource = get_object_or_404(Resource, pk=int(pk))
+    resource.views += 1
+    resource.save()
     return render(request, 'hub/resource_view.html', {'resource': resource})
 
 
@@ -76,7 +78,14 @@ def topic_resource_json(request, pk): #, page, sources_per_page,):
     for topic in topics:
         resources.extend([c for c in topic.covered_by.select_related('provider')])
 
-    return JsonResponse([ {'id' : r.id, 'name' : r.name, 'url' : r.url, 'provider' : r.provider.name, "type" : r.get_type_display() } for r in resources ], safe=False)
+    return JsonResponse([{
+        'id' : r.id,
+        'name' : r.name,
+        'url' : r.url,
+        'provider' : r.provider.name,
+        'type' : r.get_type_display(),
+        'views' : r.views,
+    } for r in resources ], safe=False)
 
 
 def load_forum_posts(request, pk):
