@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^topic/(?P<pk>\d+)/resources.json', views.topic_resource_json, name='topic_resource_json'),
     # Resource
     url(r'^resource/(?P<pk>\d+)/view', views.resource_view, name='resource_view'),
+    url(r'^resource/(?P<pk>\d+)/related.json', views.related_resources_json, name='related_resources_json'),
     url(r'^forum/(?P<pk>\d+)/threads.json', views.load_forum_posts, name='load_forum_posts'),
     url(r'^random-resource', views.randomresource_view, name='randomresource')
 ]

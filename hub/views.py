@@ -87,6 +87,15 @@ def topic_resource_json(request, pk): #, page, sources_per_page,):
         'views' : r.views,
     } for r in resources ], safe=False)
 
+def related_resources_json(request, pk):
+    related = [random.choice(Resource.objects.all()) for i in range(10)]
+    return JsonResponse([{
+        'id' : r.id,
+        'name' : r.name,
+        'views' : r.views,
+        'imgHtml' : r.get_thumbnail_html(),
+    } for r in related], safe=False)
+
 
 def load_forum_posts(request, pk):
     def fill_post_dict(posts):
