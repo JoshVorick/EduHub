@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+
+<!-- Static files for the ratings -->
 {% block content %}
     <style type="text/css">
         .post-comments .comment-meta {
@@ -51,6 +53,8 @@
                     {% endif %}
                 {% endwith %}
 
+                {% load ratings %}
+                <h6 style="text-align:left">{% ratings resource %}</span></h6>
                 <h4 style="text-align:right">{{ resource.views }} views</span></h4>
 
                 <!-- Meta data -->

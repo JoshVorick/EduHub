@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
 from . import views
 
 urlpatterns = [
@@ -15,5 +15,6 @@ urlpatterns = [
     url(r'^resource/(?P<pk>\d+)/view', views.resource_view, name='resource_view'),
     url(r'^resource/(?P<pk>\d+)/related.json', views.related_resources_json, name='related_resources_json'),
     url(r'^forum/(?P<pk>\d+)/threads.json', views.load_forum_posts, name='load_forum_posts'),
+    url(r'^ratings/', include('star_ratings.urls', namespace='ratings', app_name='ratings')),
     url(r'^random-resource', views.randomresource_view, name='randomresource')
 ]

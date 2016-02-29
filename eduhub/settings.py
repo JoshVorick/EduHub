@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'easy_select2',
     'bootstrap3',
     'mptt',
+    'star_ratings',
     'django_js_reverse',
     'django_mptt_admin',
     # EduHub
@@ -140,3 +141,6 @@ ACCOUNT_ACTIVATION_DAYS = 7
 
 # dual auth (login with email or username)
 AUTHENTICATION_BACKENDS = ['django-dual-authentication.backends.DualAuthentication']
+
+# Star rating settings
+STAR_RATINGS_RERATE = False
