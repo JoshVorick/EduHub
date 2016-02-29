@@ -1,6 +1,6 @@
 import random
 from django.shortcuts import render
-from hub.models import Topic, EduSource, Post
+from hub.models import Topic, Resource, Post
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
@@ -48,14 +48,16 @@ def topic_list_jstree(request):
     return JsonResponse(children, safe=False)
 
 
-def randomsource_view(request):
-    blah = random.choice(EduSource.objects.all())
-    return redirect('edusource_view', pk=blah.pk)
+def randomresource_view(request):
+    rand_resource = random.choice(Resource.objects.all())
+    return redirect('resource_view', pk=rand_resource.pk)
 
 
-def edusource_view(request, pk):
-    edusource = get_object_or_404(EduSource, pk=int(pk))
-    return render(request, 'hub/edusource_view.html', {'edusource': edusource})
+def resource_view(request, pk):
+    resource = get_object_or_404(Resource, pk=int(pk))
+    resource.views += 1
+    resource.save()
+    return render(request, 'hub/resource_view.html', {'resource': resource})
 
 
 def topic_detail_json(request, pk):
@@ -70,20 +72,27 @@ def topic_detail_json(request, pk):
     return JsonResponse(topic_dict)
 
 
-def topic_edusource_json(request, pk): #, page, sources_per_page,):
+def topic_resource_json(request, pk): #, page, sources_per_page,):
     topics = Topic.objects.get(id=int(pk)).get_descendants(include_self=True)
-    sources = []
+    resources = []
     for topic in topics:
-        sources.extend([c for c in topic.covered_by.select_related('provider')])
+        resources.extend([c for c in topic.covered_by.select_related('provider')])
 
-    return JsonResponse([ {'id' : s.id, 'name' : s.name, 'url' : s.url, 'provider' : s.provider.name, "type" : s.type } for s in sources ], safe=False)
+    return JsonResponse([{
+        'id' : r.id,
+        'name' : r.name,
+        'url' : r.url,
+        'provider' : r.provider.name,
+        'type' : r.get_type_display(),
+        'views' : r.views,
+    } for r in resources ], safe=False)
 
 
 def load_forum_posts(request, pk):
     def fill_post_dict(posts):
         return [{'id' : s.id, 'title' : s.title, 'time': s.created_at, 'text' : s.text, 'poster' : s.user.user.username, 'children' : fill_post_dict(s.get_children()) } for s in posts ]
 
-    forum = get_object_or_404(EduSource, pk=int(pk))
+    forum = get_object_or_404(Resource, pk=int(pk))
     posts = Post.objects.all().filter(level=0, forum=forum)
 
     # offset = request.GET['offset'] if 'offset' in request.GET else 0

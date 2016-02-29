@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from hub.models import Topic, EduSource, EduProvider, CoveredTopic, Rating, UserProfile, Post
+from hub.models import Topic, Resource, Provider, CoveredTopic, UserProfile, Post
 from django.contrib.auth.models import User
 
 class Command(BaseCommand):
@@ -8,8 +8,8 @@ class Command(BaseCommand):
 
     def _create_topics(self):
         Topic.objects.all().delete()
-        EduSource.objects.all().delete()
-        EduProvider.objects.all().delete()
+        Resource.objects.all().delete()
+        Provider.objects.all().delete()
 
         try:
             User.objects.get(username='sample_user').delete()
@@ -126,51 +126,61 @@ class Command(BaseCommand):
 
 
 
-        #eduprovider
-        uiuc = EduProvider.objects.create(name = "University of Illinois Urbana-Champaign", url = "http://illinois.edu", description = "It's alright")
-        coursera = EduProvider.objects.create(name = "Coursera", url = "https://www.coursera.org/", description = "It's alright")
-        yale = EduProvider.objects.create(name = "yale", url ="http://www.yale.edu/", description="We are yale, is exactly what Yale would say.")
-        mycodeschool = EduProvider.objects.create(name = "mycodeschool", url = "http://www.mycodeschool.com/", description = "Good person")
-        andrewhickson = EduProvider.objects.create(name="YouTube - andrewhickson", url="https://www.youtube.com/channel/UC3bsBSHWNrP3ni07NDrJ5hQ", description="Random YouTuber")
-        wikipedia = EduProvider.objects.create(name="Wikipedia", url="https://en.wikipedia.org/", description="The Free Encyclopedia")
-        mike = EduProvider.objects.create(name="YouTube - Mike Sambol", url="https://www.youtube.com/channel/UCzDJwLWoYCUQowF_nG3m5OQ")
-        stanford = EduProvider.objects.create(name="Stanford", url="https://www.stanford.edu")
-        chainthat = EduProvider.objects.create(name="YouTube - Chainthat", url="https://www.youtube.com/channel/UCanQY4BfDIgcFzjQF7_Cuyg")
-        asapscience = EduProvider.objects.create(name="YouTube - AsapSCIENCE", url="https://www.youtube.com/user/AsapSCIENCE")
-        minphys = EduProvider.objects.create(name="YouTube - MinutePhysics", url="https://www.youtube.com/channel/UCUHW94eEFW7hkUMVaZz4eDg")
+        #provider
+        uiuc = Provider.objects.create(name = "University of Illinois Urbana-Champaign", url = "http://illinois.edu", description = "It's alright")
+        coursera = Provider.objects.create(name = "Coursera", url = "https://www.coursera.org/", description = "It's alright")
+        yale = Provider.objects.create(name = "yale", url ="http://www.yale.edu/", description="We are yale, is exactly what Yale would say.")
+        mycodeschool = Provider.objects.create(name = "mycodeschool", url = "http://www.mycodeschool.com/", description = "Good person")
+        andrewhickson = Provider.objects.create(name="YouTube - andrewhickson", url="https://www.youtube.com/channel/UC3bsBSHWNrP3ni07NDrJ5hQ", description="Random YouTuber")
+        wikipedia = Provider.objects.create(name="Wikipedia", url="https://en.wikipedia.org/", description="The Free Encyclopedia")
+        mike = Provider.objects.create(name="YouTube - Mike Sambol", url="https://www.youtube.com/channel/UCzDJwLWoYCUQowF_nG3m5OQ")
+        stanford = Provider.objects.create(name="Stanford", url="https://www.stanford.edu")
+        chainthat = Provider.objects.create(name="YouTube - Chainthat", url="https://www.youtube.com/channel/UCanQY4BfDIgcFzjQF7_Cuyg")
+        asapscience = Provider.objects.create(name="YouTube - AsapSCIENCE", url="https://www.youtube.com/user/AsapSCIENCE")
+        minphys = Provider.objects.create(name="YouTube - MinutePhysics", url="https://www.youtube.com/channel/UCUHW94eEFW7hkUMVaZz4eDg")
 
 
-        #edusources
-        uiuc_math_531_fa2015 = EduSource.objects.create(name = "Analytical Number Theory Math 531 UIUC", type = "Notes and Problem Sets", url = "http://www.math.illinois.edu/~berndt/math531.html",provider=uiuc)
-        cera_crypt = EduSource.objects.create(name = "Cryptography I: Stanford University", type = "Full Course", url = "https://www.coursera.org/learn/crypto",provider=coursera)
-        ytbst = EduSource.objects.create(name = "Data Structures: Binary Search Trees", type = "Online Video", url = "https://www.youtube.com/watch?v=pYT9F8_LFTM",provider=mycodeschool)
-        ytrieman = EduSource.objects.create(name = "The Riemann Hypothesis", type = "Lecture Video", url = "https://www.youtube.com/watch?v=yhtcJPI6AtY",provider=yale)
-        wikimst = EduSource.objects.create(name="Minimum Spanning Trees", type="Wiki", url="https://en.wikipedia.org/wiki/Minimum_spanning_tree", provider=wikipedia)
-        ytPrimAlgo = EduSource.objects.create(name="Prim's Algorithm", type="Video", url="https://www.youtube.com/watch?v=BtGuZ-rrUeY", provider=andrewhickson)
-        wikiPrimAlgo = EduSource.objects.create(name="Prim's algorithm", type="Wiki", url="https://en.wikipedia.org/wiki/Prim%27s_algorithm", provider=wikipedia)
-        ytKruskalAlgo = EduSource.objects.create(name="Kruskal's algorithm in 2 minutes", type="Video", url="https://www.youtube.com/watch?v=71UQH7Pr9kU", provider=mike)
-        wikiFFA = EduSource.objects.create(name="Ford-Fulkerson algorithm", type="Wiki", url="https://en.wikipedia.org/wiki/Ford%E2%80%93Fulkerson_algorithm", provider=wikipedia)
-        stanGraph = EduSource.objects.create(name="Basic Graph Algorithms", type="PDF", url="https://web.stanford.edu/class/cs97si/06-basic-graph-algorithms.pdf", provider=stanford)
-        ytmerkle = EduSource.objects.create(name="Blockchain Basics Explained - Hashes with Mining and Merkle trees", type="Video", url="https://www.youtube.com/watch?v=lik9aaFIsl4", provider=chainthat)
-        ytmotivation = EduSource.objects.create(name="The Science of Motivation", type="Video", url="https://www.youtube.com/watch?v=pZT-FZqfxZA", provider=asapscience)
-        ytcolor = EduSource.objects.create(name="Computer Color is Broken", type="Video", url="https://www.youtube.com/watch?v=LKnqECcg6Gw", provider=minphys)
-        wikigravwaves = EduSource.objects.create(name="Gravitational Waves", type="Wiki", url="https://en.wikipedia.org/wiki/Gravitational_wave", provider=wikipedia)
+        #resources
+        # for now hard code mapping from int to learning style. Later when resources are only added online, django_forms will handle this automatically
+        VIDEO = 1
+        WIKI = 2
+        SLIDES = 3
+        LECTURE = 4
+        COURSE = 5
+        PAPER = 6
+        PDF = 7
+        PROBLEM_SET = 8
+
+        uiuc_math_531_fa2015 = Resource.objects.create(name = "Analytical Number Theory Math 531 UIUC", type = PROBLEM_SET, url = "http://www.math.illinois.edu/~berndt/math531.html",provider=uiuc)
+        cera_crypt = Resource.objects.create(name = "Cryptography I: Stanford University", type = COURSE, url = "https://www.coursera.org/learn/crypto",provider=coursera)
+        ytbst = Resource.objects.create(name = "Data Structures: Binary Search Trees", type = VIDEO, url = "https://www.youtube.com/watch?v=pYT9F8_LFTM",provider=mycodeschool)
+        ytrieman = Resource.objects.create(name = "The Riemann Hypothesis", type = VIDEO, url = "https://www.youtube.com/watch?v=yhtcJPI6AtY",provider=yale)
+        wikimst = Resource.objects.create(name="Minimum Spanning Trees", type=WIKI, url="https://en.wikipedia.org/wiki/Minimum_spanning_tree", provider=wikipedia)
+        ytPrimAlgo = Resource.objects.create(name="Prim's Algorithm", type=VIDEO, url="https://www.youtube.com/watch?v=BtGuZ-rrUeY", provider=andrewhickson)
+        wikiPrimAlgo = Resource.objects.create(name="Prim's algorithm", type=WIKI, url="https://en.wikipedia.org/wiki/Prim%27s_algorithm", provider=wikipedia)
+        ytKruskalAlgo = Resource.objects.create(name="Kruskal's algorithm in 2 minutes", type=VIDEO, url="https://www.youtube.com/watch?v=71UQH7Pr9kU", provider=mike)
+        wikiFFA = Resource.objects.create(name="Ford-Fulkerson algorithm", type=WIKI, url="https://en.wikipedia.org/wiki/Ford%E2%80%93Fulkerson_algorithm", provider=wikipedia)
+        stanGraph = Resource.objects.create(name="Basic Graph Algorithms", type=SLIDES, url="https://web.stanford.edu/class/cs97si/06-basic-graph-algorithms.pdf", provider=stanford)
+        ytmerkle = Resource.objects.create(name="Blockchain Basics Explained - Hashes with Mining and Merkle trees", type=VIDEO, url="https://www.youtube.com/watch?v=lik9aaFIsl4", provider=chainthat)
+        ytmotivation = Resource.objects.create(name="The Science of Motivation", type=VIDEO, url="https://www.youtube.com/watch?v=pZT-FZqfxZA", provider=asapscience)
+        ytcolor = Resource.objects.create(name="Computer Color is Broken", type=VIDEO, url="https://www.youtube.com/watch?v=LKnqECcg6Gw", provider=minphys)
+        wikigravwaves = Resource.objects.create(name="Gravitational Waves", type=WIKI, url="https://en.wikipedia.org/wiki/Gravitational_wave", provider=wikipedia)
         
         #covertopics
-        CoveredTopic.objects.create(topic=crypt,edusource=cera_crypt)
-        CoveredTopic.objects.create(topic=analytical_numb,edusource=uiuc_math_531_fa2015)
-        CoveredTopic.objects.create(topic=number_theory,edusource=ytrieman)
-        CoveredTopic.objects.create(topic=bst,edusource=ytbst)
-        CoveredTopic.objects.create(topic=mintree, edusource=wikimst)
-        CoveredTopic.objects.create(topic=prims, edusource=ytPrimAlgo)
-        CoveredTopic.objects.create(topic=prims, edusource=wikiPrimAlgo)
-        CoveredTopic.objects.create(topic=kruskal, edusource=ytKruskalAlgo)
-        CoveredTopic.objects.create(topic=ffa, edusource=wikiFFA)
-        CoveredTopic.objects.create(topic=graphAlgo, edusource=stanGraph)
-        CoveredTopic.objects.create(topic=blockchain, edusource=ytmerkle)
-        CoveredTopic.objects.create(topic=bchem, edusource=ytmotivation)
-        CoveredTopic.objects.create(topic=graphics, edusource=ytcolor)
-        CoveredTopic.objects.create(topic=modern, edusource=wikigravwaves)
+        CoveredTopic.objects.create(topic=crypt,resource=cera_crypt)
+        CoveredTopic.objects.create(topic=analytical_numb,resource=uiuc_math_531_fa2015)
+        CoveredTopic.objects.create(topic=number_theory,resource=ytrieman)
+        CoveredTopic.objects.create(topic=bst,resource=ytbst)
+        CoveredTopic.objects.create(topic=mintree, resource=wikimst)
+        CoveredTopic.objects.create(topic=prims, resource=ytPrimAlgo)
+        CoveredTopic.objects.create(topic=prims, resource=wikiPrimAlgo)
+        CoveredTopic.objects.create(topic=kruskal, resource=ytKruskalAlgo)
+        CoveredTopic.objects.create(topic=ffa, resource=wikiFFA)
+        CoveredTopic.objects.create(topic=graphAlgo, resource=stanGraph)
+        CoveredTopic.objects.create(topic=blockchain, resource=ytmerkle)
+        CoveredTopic.objects.create(topic=bchem, resource=ytmotivation)
+        CoveredTopic.objects.create(topic=graphics, resource=ytcolor)
+        CoveredTopic.objects.create(topic=modern, resource=wikigravwaves)
 
 
         #example user
@@ -190,9 +200,6 @@ class Command(BaseCommand):
         commented_sources = [wikimst, ytbst, wikiFFA, ytPrimAlgo, ytKruskalAlgo]
         for src in commented_sources:
             add_comment_thread(src) # 5:19 AM questions: is Mike Fowle truly my father?
-
-        #ratings
-        rate1 = Rating.objects.create(review="This course taught me I have a big weeeeeweeeee",stars=4,poster=upost.profile,source=cera_crypt)
        
         #uiuc_math_531_fa2015.number_theory.add()
     def handle(self, *args, **options):

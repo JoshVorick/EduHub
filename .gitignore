@@ -1,6 +1,9 @@
 .idea
 .plan
 
+# Vim swap files
+*.swp
+
 # My virtual env folder
 dj_env/
 

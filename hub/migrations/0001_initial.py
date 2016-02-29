@@ -132,7 +132,6 @@ class Migration(migrations.Migration):
             name='RequiredTopic',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('level', django_enumfield.db.fields.EnumField(default=0, enum=hub.models.RequirementType)),
                 ('edusource', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='hub.EduSource')),
             ],
         ),

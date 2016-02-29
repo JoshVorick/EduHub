@@ -33,14 +33,14 @@
     </style>
     <div class="row-fluid">
         <div class="col-md-12" style="margin-bottom: 18px;">
-            <h3><a target="_blank" href="{{ edusource.url }}">{{ edusource.name }}</a>&nbsp;&nbsp;<span class="label label-primary">{{ edusource.type }}</span></h3>
-            <h4>from {{ edusource.provider.name }}</h4>
+            <h3><a target="_blank" href="{{ resource.url }}">{{ resource.name }}</a>&nbsp;&nbsp;<span class="label label-primary">{{ resource.type }}</span></h3>
+            <h4>from {{ resource.provider.name }}</h4>
         </div>
     </div>
 
     <div class="row-fluid">
         <div class="col-md-8">
-            {% with edusource.get_embed_type_and_html as embed_info %}
+            {% with resource.get_embed_type_and_html as embed_info %}
                 {% if embed_info.0 == 'video' %}
                     <div class="embed-responsive embed-responsive-16by9">
                         {{ embed_info.1 | safe }}
@@ -54,8 +54,8 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Covered Topics</div>
                 <div class="panel-body">
-                    {% if edusource.covered_topics.all|length > 0 %}
-                        {% for covered in edusource.covered_topics.all %}
+                    {% if resource.covered_topics.all|length > 0 %}
+                        {% for covered in resource.covered_topics.all %}
                             {{ covered.name }}{% if not forloop.last %},&nbsp;{% endif %}
                         {% endfor %}
                     {% else %}
@@ -66,8 +66,8 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Required Topics</div>
                 <div class="panel-body">
-                    {% if edusource.required_topics.all|length > 0 %}
-                        {% for covered in edusource.required_topics.all %}
+                    {% if resource.required_topics.all|length > 0 %}
+                        {% for covered in resource.required_topics.all %}
                             {{ covered.name }}{% if not forloop.last %},&nbsp;{% endif %}
                         {% endfor %}
                     {% else %}
@@ -133,7 +133,7 @@
                 return res;
             };
 
-            $.getJSON(Urls.load_forum_posts({{ edusource.pk }}), function (response) {
+            $.getJSON(Urls.load_forum_posts({{ resource.pk }}), function (response) {
                 var html = '';
 
                 $.each(response, function (_, thread) {
