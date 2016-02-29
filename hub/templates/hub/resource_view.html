@@ -123,7 +123,8 @@
             <!-- Related Links -->
             <div class="col-md-4">
                 <h3>Related Links</h3>
-                <div id="related-resources" class="container">
+
+                <div id="related-resources">
 
                 </div>
             </div>
@@ -138,12 +139,11 @@
 
             // Add related links
             $.getJSON(Urls.related_resources_json(9), function(response) {
-                var html = '<div class="list-group">';
-
+                var html = '';
                 for(var i=0; i<response.length; i++) {
-                    html += '<a href="' + Urls.resource_view(response[i].id) + '" class="list-group-item">' ;
-                    html += response[i].imgHtml;
-                    html += '<h4>' + response[i].name + '</h4>';
+                    html += '<a href="' + Urls.resource_view(response[i].id) + '" class="list-group-item row">' ;
+                    html += '<div class="col-md-4">' + response[i].imgHtml + '</div>';
+                    html += '<div class="col-md-8"><h4>' + response[i].name + '</h4></div>';
                     html += '</div></div></a>';
                 }
 
