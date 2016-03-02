@@ -81,7 +81,7 @@ class Resource(TimestampedModel):
         domain = parsed.netloc.lower()
         domain = domain[4:] if domain[0:4] == 'www.' else domain
         if domain == 'youtube.com':
-            base = '<img src="%s" alt="YouTube" class="img-thumbnail" width="90px" height="80px"></img>';
+            base = '<img src="%s" alt="YouTube" width="90px" height="80px"></img>';
             # attempt to pull v= from query
             query_args = parse_qs(parsed.query)
             if 'v' in query_args:
@@ -91,14 +91,14 @@ class Resource(TimestampedModel):
         if self.url[-4:] == '.pdf':
             #return ("<object data='%s' type='application/pdf' width='90px' height='80px'>PDF</object>" % self.url)
             # Use a generic PDF icon
-            return '<img src="http://www.austimorfn.org/wp-content/uploads/2015/05/pdf-icon.png" alt="PDF" class="img-rounded" width="90px" height="80px"></img>';
+            return '<img src="http://www.austimorfn.org/wp-content/uploads/2015/05/pdf-icon.png" alt="PDF" width="90px" height="80px"></img>';
 
         if 'wikipedia' in self.url:
             # Use Wikipedia's W icon
-            return '<img src="https://upload.wikimedia.org/wikipedia/en/archive/2/28/20150803040129!WikipediaMobileAppLogo.png" alt="Wikipedia" class="img-rounded" width="90px" height="80px"></img>';
+            return '<img src="https://upload.wikimedia.org/wikipedia/en/archive/2/28/20150803040129!WikipediaMobileAppLogo.png" alt="Wikipedia" width="90px" height="80px"></img>';
 
         # Use a question mark icon
-        return '<img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Transparent_flag_with_question_mark.png" alt="???" class="img-rounded" width="90px" height="80px"></img>';
+        return '<img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Transparent_flag_with_question_mark.png" alt="???" width="90px" height="80px"></img>';
 
     def __str__(self):
         return self.name
@@ -108,6 +108,9 @@ class Resource(TimestampedModel):
 class Tag(TimestampedModel):
     name = models.CharField('Name', max_length=30)
     resources = models.ManyToManyField(Resource, related_name='tags')
+
+    def __str__(self):
+        return self.name
 
 
 # A resource provider (e.g. Wikipedia, Khan Academy, a specific YT channel, etc)

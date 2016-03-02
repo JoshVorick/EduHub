@@ -32,6 +32,12 @@
             text-decoration: none;
             color: #333;
         }
+
+        h5, h6 {
+            margin-left: 5px;
+            margin-top: 3px;
+            margin-bottom: 0px;
+        }
     </style>
 
     <div class="container">
@@ -141,10 +147,14 @@
             $.getJSON(Urls.related_resources_json(9), function(response) {
                 var html = '';
                 for(var i=0; i<response.length; i++) {
-                    html += '<a href="' + Urls.resource_view(response[i].id) + '" class="list-group-item row">' ;
-                    html += '<div class="col-md-4">' + response[i].imgHtml + '</div>';
-                    html += '<div class="col-md-8"><h4>' + response[i].name + '</h4></div>';
-                    html += '</div></div></a>';
+                    html += '<a href="' + Urls.resource_view(response[i].id) + '" class="list-group-item row" style="border-style: none">' ;
+                    html += '<div class="col-xs-3 nopadding">' + response[i].imgHtml + '</div>';
+                    html += '<div class="col-xs-9 nopadding">';
+                    html += '<h5>' + response[i].name + '</h5>';
+                    html += '<h6>' + response[i].provider + '</h6>';
+                    html += '<h6>' + response[i].views + ' views</h6>';
+                    html += '</div>';
+                    html += '</div></a>';
                 }
 
                 $("#related-resources").html(html);

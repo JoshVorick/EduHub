@@ -89,9 +89,16 @@ def topic_resource_json(request, pk): #, page, sources_per_page,):
 
 def related_resources_json(request, pk):
     related = [random.choice(Resource.objects.all()) for i in range(10)]
+
+    def shorten(name):
+        if len(name) > 60:
+            return name[:60] + '...'
+        return name
+
     return JsonResponse([{
         'id' : r.id,
-        'name' : r.name,
+        'name' : shorten(r.name),
+        'provider' : r.provider.name,
         'views' : r.views,
         'imgHtml' : r.get_thumbnail_html(),
     } for r in related], safe=False)
