@@ -33,6 +33,11 @@
             color: #333;
         }
 
+        .about p {
+            height: 70px;
+            overflow: hidden;
+        }
+
         h5, h6 {
             margin-left: 5px;
             margin-top: 3px;
@@ -98,15 +103,17 @@
                 <h4 style="text-align:right">{{ resource.views }} views</span></h4>
 
                 <!-- Meta data -->
-                <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#about">About</a></li>
-                </ul>
-                <br>
-                <div class="tab-content">
-                    <div id="about" class="tab-pane fade in active">
-                    </div>
+                <div class="about">
+                    <p>
+                        {{ resource.name }} was created by {{ resource.provider }} <br>
+                        It should take about {{ resource.length }} time to get through <br>
+                        The rest of this description is mostly just here for fun and testing <br>
+                        Maybe some info about a more complicated rating and tags should go here. <br>
+                        Maybe also some stuff about who uploaded it and some stats it has on the original site <br>
+                        Or some useful links? Maybe users can vote on some good 'next resources' or something goofy <br>
+                        idk. <br>
+                    </p>
                 </div>
-
 
                 <h4>Discussion</h4>
                 <div id="discussion" class="container-fluid">
@@ -172,6 +179,16 @@
                 }
 
                 $("#related-resources").html(html);
+            });
+
+            // Make about section toggleable height
+            $(".about p").click(function() {
+                console.log("I DUN GOT LCICKED");
+                if ($(this).css("overflow") == 'hidden') {
+                    $(this).attr("style", "overflow:visible; height:auto");
+                } else {
+                    $(this).attr("style", "overflow:hidden; height:70px");
+                }
             });
 
 
