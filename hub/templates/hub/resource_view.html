@@ -38,17 +38,51 @@
             margin-top: 3px;
             margin-bottom: 0px;
         }
+
+        .topics ul li {
+            color: #333;
+        }
     </style>
 
-    <div class="container">
+    <div class="container-fluid">
         <div class="row-fluid">
-
-            <!-- Resource itself, meta-data and Discussion -->
-            <div class="col-md-8">
+            <div class="col-md-2"></div>
+            <div class="col-md-7">
                 <h2 style="float:left"><a target="_blank" href="{{ resource.url }}">{{ resource.name }}</a>&nbsp;&nbsp;</h2>
                 <h3 style="float:left"><span class="label label-primary">{{ resource.get_type_display }}</span></h3>
                 <h3 style="clear:both">from {{ resource.provider.name }}</h3>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
 
+    <div class="container-fluid">
+        <div class="row-fluid">
+
+            <!-- Covered Topics and Prerequisites -->
+            <div class="col-md-2" style>
+                <div class="topics" id="covered">
+                    <h4>Covered Topics</h4>
+                    <ul>
+                        {% for covered in resource.covered_topics.all %}
+                            <li>{{ covered.name }}</li>
+                        {% endfor %}
+                        <li>Add one</li>
+                    </ul>
+                </div>
+                <div class="topics" id="prereqs">
+                    <h4>Prerequisites</h4>
+                    <ul>
+                        {% for covered in resource.required_topics.all %}
+                            <li>{{ covered.name }}</li>
+                        {% endfor %}
+                        <li>Add one</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Resource itself, meta-data and Discussion -->
+            <div class="col-md-7 nopadding">
                 {% with resource.get_embed_type_and_html as embed_info %}
                     {% if embed_info.0 == 'video' %}
                         <div class="embed-responsive embed-responsive-16by9">
@@ -66,30 +100,10 @@
                 <!-- Meta data -->
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#about">About</a></li>
-                    <li><a data-toggle="tab" href="#covered_topics">Covered Topics</a></li>
-                    <li><a data-toggle="tab" href="#prerequisites">Prerequisites</a></li>
                 </ul>
                 <br>
                 <div class="tab-content">
                     <div id="about" class="tab-pane fade in active">
-                    </div>
-                    <div id="covered_topics" class="tab-pane fade">
-                        {% if resource.covered_topics.all|length > 0 %}
-                            {% for covered in resource.covered_topics.all %}
-                                {{ covered.name }}{% if not forloop.last %},&nbsp;{% endif %}
-                            {% endfor %}
-                        {% else %}
-                            N/A
-                        {% endif %}
-                    </div>
-                    <div id="prerequisites" class="tab-pane fade">
-                        {% if resource.required_topics.all|length > 0 %}
-                            {% for covered in resource.required_topics.all %}
-                                {{ covered.name }}{% if not forloop.last %},&nbsp;{% endif %}
-                            {% endfor %}
-                        {% else %}
-                            N/A
-                        {% endif %}
                     </div>
                 </div>
 
@@ -127,7 +141,7 @@
             </div>
 
             <!-- Related Links -->
-            <div class="col-md-4">
+            <div class="col-md-3 nopadding">
                 <h3>Related Links</h3>
 
                 <div id="related-resources">
